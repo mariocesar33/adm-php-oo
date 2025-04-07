@@ -28,7 +28,6 @@ class PageController {
      * Recebe a URL do .htaccess
      */
     public function __construct() {
-        echo "Carregar página.<br><br>";
 
         // Verificar se vem valor na variável url enviada pelo .htaccess
         if(!empty(filter_input(INPUT_GET, 'url', FILTER_DEFAULT))){
@@ -36,15 +35,11 @@ class PageController {
             // Receber o valor da variável url enviada pelo .htaccess
             $this->url = filter_input(INPUT_GET, 'url', FILTER_DEFAULT);
 
-            echo "Acessar o endereço: " . $this->url . "<br><br>";
-
             // Chamar a classe helper para limpar a URL
             $this->url = ClearUrl::clearUrl($this->url);
-            var_dump($this->url);
 
             // Converter a string da URL em um array
             $this->urlArray = explode('/', $this->url);
-            var_dump($this->urlArray);
 
             // Verificar se existe a controller na url
             if(isset($this->urlArray[0])) {
@@ -63,7 +58,19 @@ class PageController {
         }else{
             $this->urlController = SlugController::slugController("login");
         }
-        var_dump($this->urlController);
-        var_dump($this->urlParametro);
+    }
+
+    /**
+     * Carregar a página/controller
+     * Instanciar a classe para validar e carregar a página/controller
+     * 
+     * @return void
+     */
+    public function loadPage(): void {
+        // Instanciar a classe para validar e carregar página/controller
+        $loaderPageAdm = new LoadPageAdm();
+
+        // Chamar o método e enviar como parâmetro a controller e o parâmetro URL
+        $loaderPageAdm->loadPageAdm($this->urlController, $this->urlParametro);
     }
 }
