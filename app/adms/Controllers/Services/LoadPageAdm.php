@@ -36,18 +36,25 @@ class LoadPageAdm {
 
     // Verificar se existe a página
     if (!$this->checkPageExists()) {
+
       // Chamar o método para gerar o log
-      GenerateLog::generateLog("error", "Pagina não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+      GenerateLog::generateLog(
+        "error", "Pagina não encontrada.", 
+        ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]
+      );
       
-      die("Pagina não encontrada!");
+      die("Erro 002: Por favor tente novamente. Caso o problema persista, entre em contato o administrador {$_ENV['EMAIL_ADM']}");
     }
 
     // Verificar se existe a classe
     if (!$this->checkControllersExists()) {
       // Chamar o método para gerar o log
-      GenerateLog::generateLog("error", "Controller não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+      GenerateLog::generateLog(
+        "error", "Controller não encontrada.", 
+        ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]
+      );
       
-      die("Controller não encontrada!");
+      die("Erro 003: Por favor tente novamente. Caso o problema persista, entre em contato o administrador {$_ENV['EMAIL_ADM']}");
     }
   }
 
@@ -105,7 +112,7 @@ class LoadPageAdm {
    *
    * @return void
    */
-  private function loadMetodo() : void {
+  private function loadMetodo(): void {
     // Instanciar a classe da página que deve ser carregada
     $classLoad = new $this->classLoad();
 
@@ -114,11 +121,19 @@ class LoadPageAdm {
 
       // Carregar o método
       $classLoad->{"index"}($this->urlParameter);
+
+      GenerateLog::generateLog(
+        "info", "Página acessada.", 
+        ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]
+      );
     }else{
       // Chamar o método para gerar o log
-      GenerateLog::generateLog("error", "Método não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+      GenerateLog::generateLog(
+        "error", "Método não encontrada.", 
+        ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]
+      );
 
-      die("Método não encontrado");
+      die("Erro 004: Por favor tente novamente. Caso o problema persista, entre em contato o administrador {$_ENV['EMAIL_ADM']}");
     }
   }
 }
