@@ -11,5 +11,7 @@
             "email": "mcgato33@hotmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "monolog/monolog": "^3.9"
+    }
 }

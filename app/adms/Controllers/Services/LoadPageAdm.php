@@ -2,6 +2,8 @@
 
 namespace App\adms\Controllers\Services;
 
+use App\adms\Helpers\GenerateLog;
+
 class LoadPageAdm {
   /** @var string $urlController Recebe da URL o nome da controller */
   private string $urlController;
@@ -34,12 +36,18 @@ class LoadPageAdm {
 
     // Verificar se existe a página
     if (!$this->checkPageExists()) {
+      // Chamar o método para gerar o log
+      GenerateLog::generateLog("error", "Pagina não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+      
       die("Pagina não encontrada!");
     }
 
     // Verificar se existe a classe
     if (!$this->checkControllersExists()) {
-        die("Controller não encontrada!");
+      // Chamar o método para gerar o log
+      GenerateLog::generateLog("error", "Controller não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+      
+      die("Controller não encontrada!");
     }
   }
 
@@ -107,6 +115,9 @@ class LoadPageAdm {
       // Carregar o método
       $classLoad->{"index"}($this->urlParameter);
     }else{
+      // Chamar o método para gerar o log
+      GenerateLog::generateLog("error", "Método não encontrada.", ['pagina' => $this->urlController, 'parametro' => $this->urlParameter]);
+
       die("Método não encontrado");
     }
   }
