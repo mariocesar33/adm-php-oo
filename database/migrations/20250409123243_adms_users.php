@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class AdmsUsers extends AbstractMigration
-{
+final class AdmsUsers extends AbstractMigration {
     /**
      * Cria a tabela de AdmsUsers.
      * 
      * https://book.cakephp.org/phinx/0/en/migrations.html#the-change-method
      */
-    public function change(): void {
+    public function up(): void {
         // Acesso o IF quando não existe a tabela no banco de dados.
         if(!$this->hasTable('adms_users')) {
             // Definir o nome da tabela.
@@ -27,5 +26,11 @@ final class AdmsUsers extends AbstractMigration
                 ->create();
         }
         
+    }
+
+    // Método down() para reverter a migração (caso necessário).
+    public function down(): void {
+        // Remover a tabela adms_users.
+        $this->table('adms_users')->drop()->save();
     }
 }
